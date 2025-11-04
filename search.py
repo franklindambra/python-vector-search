@@ -61,7 +61,9 @@ model = SentenceTransformer("all-MiniLM-L6-v2")
 # The 'normalize_embeddings=True' option scales each vector to length 1,
 # so similarity comparisons use direction only (cosine similarity).
 # The [0] extracts the first embedding if only one document was passed.
-doc_embeddings = model.encode(documents, normalize_embeddings=True)[0]
+doc_embeddings = model.encode(documents, normalize_embeddings=True)
+
+print("doc embeddings:",doc_embeddings)
 
 query = input("Enter your search query: ")
 
@@ -74,4 +76,11 @@ query_embedding = model.encode([query], normalize_embeddings=True)[0]
 
 
 
+#Compute cosine similarities
+scores = np.dot(doc_embeddings, query_embedding)
 
+
+#get best match
+best_index = np.argmax(scores)
+print(f"\nTop result: {documents[best_index]}")
+print(f"Score: {scores[best_index]:.3f}")
